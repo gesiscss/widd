@@ -1,5 +1,5 @@
 Type: Jupyter Notebook Extension
-Compatibility: 6.x, 7.x
+Compatibility: 5.x, 6.x, 7.x
 Name: widd
 Main: main.js
 Link: README.md
@@ -8,4 +8,22 @@ Description: |
   Adds a button to compose a pdf-document that serves as a data documentation file.
   Helpful for social scientists interested in rigorous data analysis.
 Parameters:
-- none
+- name: snippets.insert_as_new_cell
+  description: 'Insert WIDD-snippets as new cells, rather than appending cells'
+  input_type: checkbox
+  default: false
+- name: snippets.sibling_selector
+  description: |
+    A JQuery selector for a sibling element next to whose parent element the 
+    new menu(s) will be inserted. Other suitable example '#edit_menu' etc
+  input_type: text
+  default: '#help_menu'
+- name: snippets.top_level_submenu_goes_left
+  description: |
+    Snippet menus are big. So what direction?
+  input_type: checkbox
+  default: true
+- name: snippets.include_submenu.menu_bullets
+  description: "Include our widd-menu"
+  input_type: checkbox
+  default: true
