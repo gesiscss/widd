@@ -1,13 +1,17 @@
 define([
-    'base/js/events',
-    'jquery',
     'require',
+    'jquery',
     'base/js/namespace',
     './menu_bullets',
-], function(Jupyter, $, requirejs, menu_bullets) {
+], function(requirejs, $, Jupyter, menu_bullets) {
     "use strict";
 
-    connsole.log("Hallo, widd is starting");
+
+    if (typeof requirejs === 'undefined') {
+        console.error('requirejs module is not defined');
+    }
+    
+    console.log("Hallo, widd is starting");
 
     var mod_name = 'widd';
     var mod_log_prefix = mod_name + '[' + mod_name + ']';
@@ -26,7 +30,7 @@ define([
 
     var options = {
         sibling : undefined,
-        menus = [],
+        menus : [],
         hooks: {
             pre_config: undefined,
             post_config: undefined,
@@ -67,7 +71,7 @@ define([
         else {
             options.menus = [
                 {
-                    'name' : 'WIDD',
+                    'name' : 'WIDD',    
                     'sub-menu-direction' : cfg.top_level_submenu_goes_left ? 'left' : 'right',
                     'sub-menu' : [],
                 },
@@ -76,7 +80,7 @@ define([
             for(var ii=0; ii < includable_submenu_keys.length; ii++){
                 var key = includable_submenu_keys[ii];
                 if (cfg.include_submenu[key]){
-                    consolge.log(mod_log_prefix,
+                    console.log(mod_log_prefix,
                         'inserting default', key, 'sub-menu');
                         options.menus[0]['sub-menu'].push(menu_bullets);
                 }
@@ -146,7 +150,9 @@ define([
             .addClass('snippet');
         }
         else if (menu_item_spec.hasOwnProperty('internal-link')){
-            a.attr('href', menu_item_spec['internal-link']){
+            a.attr('href', menu_item_spec['internal-link']);
+        }
+        else if (menu_item_spec.hasOwnProperty('external-link')){
                 a.empty();
                 a.attr({
                     'target' : 'blank',
@@ -166,14 +172,14 @@ define([
                     .appendTo(element);
                 
                 var new_direction = (menu_item_spec['sub-menu-direction'] === 'left' ) ? 'left' : 'right';
-                for (var j=0; j < menu_item_spec['sub-menu'].length; +jj){
+                // in the following line: if I swap jj for j, the page slows down significantly.
+                for (var j=0; j < menu_item_spec['sub-menu'].length; j++){
                     var sub_menu_item_spec = build_menu_element(menu_item_spec['sub-menu'][j], new_direction);
                     if(sub_menu_item_spec != null){
                         sub_menu_item_spec.appendTo(sub_element);
                     }
                 }
             }
-        }
         return element;
     }
 
@@ -183,7 +189,7 @@ define([
             if (insert_before_sibling) {
                 menu_item_spec = menu_item_specs[i];
             } else {
-                menu_item_spec = menu_item_specs[menu_item_specs.length - l - i];
+                menu_item_spec = menu_item_specs[menu_item_specs.length - 1 - i];
             }
             var direction = (menu_item_spec['menu-direction'] == 'left') ? 'left' : 'right';
             var menu_element = build_menu_element(menu_item_spec, direction);
@@ -201,7 +207,7 @@ define([
             }
 
             //insert menu element into DOM (What was dom again)?
-            menu_element[insert_before_sibling ? 'insertBefore' : 'insertAtfter'](sibling);
+            menu_element[insert_before_sibling ? 'insertBefore': 'insertAfter'](sibling);
 
             window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub, menu_element[0]]);
 

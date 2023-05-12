@@ -1,5 +1,5 @@
 define({
-    'name' : 'Markdown',
+    'name' : 'Data Doc Cells',
     'sub-menu' : [
         {
             'name' : 'Documentation',
