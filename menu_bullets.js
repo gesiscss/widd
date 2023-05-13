@@ -2,7 +2,8 @@ define({
 
         'name' : 'SAGE WIDD',
         'sub-menu' : [ 
-        
+
+
                 {
             'name' : 'General Characteristics',
             'sub-menu' : [
@@ -10,7 +11,9 @@ define({
         
         {
         'name' : 'Who collected the dataset?',
-        'snippet' : ['#### Who collected the dataset and who funded the process?',],
+        'snippet' : [
+        '#### Who collected the dataset and who funded the process?',
+    ],
         
         },
         

@@ -6,12 +6,7 @@ define([
 ], function(requirejs, $, Jupyter, menu_bullets) {
     "use strict";
 
-
-    if (typeof requirejs === 'undefined') {
-        console.error('requirejs module is not defined');
-    }
     
-    console.log("Hallo, widd is starting");
 
     var mod_name = 'widd';
     var mod_log_prefix = mod_name + '[' + mod_name + ']';
@@ -22,7 +17,7 @@ define([
 
     var default_menus = [
         {
-            'name' : 'WIDD',
+            'name' : 'SAGE WIDD',
             'sub-menu-direction' : 'left',
             'sub-menu' : menus.menu_bullets
         },
@@ -100,22 +95,22 @@ define([
         }
     }
 
-    function insert_widd_code (widd_code){
+    function insert_snippet_code (snippet_code){
         if (cfg.insert_as_new_cell){
-            var new_cell = Jupyter.notebook.insert_cell_above('code');
-            new_cell.set_text(widd_code);
+            var new_cell = Jupyter.notebook.insert_cell_above('markdown');
+            new_cell.set_text(snippet_code);
             new_cell.focus_cell();
 
         }
         else {
             var selected_cell = Jupyter.notebook.get_selected_cell();
             Jupyter.notebook.edit_mode();
-            selected_cell.code_mirror.replaceSelection(widd_code, 'around');
+            selected_cell.code_mirror.replaceSelection(snippet_code, 'around');
         }
     }
     
     function callback_insert_snippet (evt) {
-        insert_widd_code($(evt.currentTarget).data('widd-code'));
+        insert_snippet_code($(evt.currentTarget).data(' snippet-code'));
 
     }
 
@@ -178,7 +173,7 @@ define([
                     if(sub_menu_item_spec != null){
                         sub_menu_item_spec.appendTo(sub_element);
                     }
-                }
+                }   
             }
         return element;
     }
