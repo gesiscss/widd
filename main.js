@@ -110,7 +110,7 @@ define([
     }
     
     function callback_insert_snippet (evt) {
-        insert_snippet_code($(evt.currentTarget).data(' snippet-code'));
+        insert_snippet_code($(evt.currentTarget).data('snippet-code'));
 
     }
 
