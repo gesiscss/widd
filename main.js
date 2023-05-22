@@ -3,7 +3,9 @@ define([
     'jquery',
     'base/js/namespace',
     './menu_bullets',
-], function(requirejs, $, Jupyter, menu_bullets) {
+    'base/js/promises',
+     'base/js/dialog',
+], function(requirejs, $, Jupyter, menu_bullets,  promises, dialog) {
     "use strict";
 
     
@@ -210,18 +212,101 @@ define([
     }
 
 
+    function parseSnippetMenu(arr) {
+        let flattenedPairs = [];
+      
+        function flatten(obj) {
+          for (let key in obj) {
+            if (typeof obj[key] === 'object') {
+              flatten(obj[key]);
+            } else {
+              flattenedPairs.push({ key, value: obj[key] });
+            }
+          }
+        }
+        flatten(arr);
 
-    function createWiddButton() {
-        alert("Button clicked!");
+        var selected = ['0'];
+        var flattenedPairs_filter = flattenedPairs.filter(({
+        key
+        }) => selected.includes(key));
+
+        flattenedPairs_filter = flattenedPairs_filter.map(pair => pair.value);
+
+        return flattenedPairs_filter;
+      }
+
+
+    const widd_snippets = parseSnippetMenu(menu_bullets)
+    console.log(widd_snippets)
+
+    function createDataDoc() {
+        // This causes creation of document
+        // 0. click the button
+        // 1. create list of all snippet menu bullets
+        var bullet_list = parseSnippetMenu(menu_bullets);
+        
+        // 1. scan the document for all widd entries
+        // 2. Paste all the cells containing such entries
+        //    into one document
+        // 3. create pdf out of that
+        // 4. print the document
+
+      // Get the current notebook
+      var notebook = Jupyter.notebook;
+      // Create a MarkdownExporter object
+      var exporter = new Jupyter.MarkdownExporter();
+     // create string to store compiled pdf content
+     var compiledPdfContent = '';
+     // Create a Promise array to track the conversion process
+        var conversionPromises = [];
+
+      // Create a list to store the matching cells
+      var matchingCells = [];
+      // Iterate over the cells in the notebook
+      for (var i=0; i<notebook.ncells(); i++) {
+        var cell = notebook.get_cell(i);
+        // Check if the cell contains any of the search strings
+        if (bullet_list.some(function(bullet) {
+          return cell.get_text().indexOf(bullet) !== -1;
+        })) {
+          // If the cell matches, add it to the list of matching cells
+          matchingCells.push(cell);
+        }
+      }
+    // Iterate over the cells in the notebook
+    for (var i = 0; i < matchingCells.ncells(); i++) {
+        var cell = matchingCells.get_cell(i);
+    
+        // Convert the cell's Markdown content to PDF and store the promise
+        var conversionPromise = exporter.from_notebook_node(cell).then(function (result) {
+        var pdfContent = result[0];
+      
+        // Append the converted PDF content to the compiled string
+        compiledPdfContent += pdfContent;
+     });
+    
+    conversionPromises.push(conversionPromise);
+  }
+  
+  // After all conversion promises have resolved, you can use the compiledPdfContent
+  // to save or display the PDF document as desired
+  Promise.all(conversionPromises).then(function() {
+    console.log(compiledPdfContent);
+  });
+
+  return compiledPdfContent
     }
+    console.log(createDataDoc());
+
     $(document).ready(function() {
 
         Jupyter.toolbar.add_buttons_group([
             {
                 'label' : 'Create WIDD',
                 'icon' : 'fa-wand-magic-sparkles',
-                'callback' : createWiddButton,
-                'id' : 'my-button'
+                'callback' : createDataDoc,
+                'id' : 'widd-button'
             }
         ]);
     });
