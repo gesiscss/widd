@@ -235,9 +235,6 @@ define([
 
 
     function createDataDoc() {
-
-        alert("Aloha!");
-
         
         var bullet_list = parseSnippetMenu(menu_bullets);   
         var matchingCells = [];
@@ -245,23 +242,37 @@ define([
         // get all cells
         var notebook = Jupyter.notebook;
         var nb_cells = notebook.get_cells();
-    // Iterate over the cells in the notebook
 
+    // Iterate over the cells in the notebook
     for (var i = 0; i < nb_cells.length; i++) {
         var cell = nb_cells[i];
 
+        // if a cell has type markdown
         if (cell.cell_type === 'markdown'){
 
+            // get the content of the cell 
             var cellContent = cell.get_text();
-
+            // and check whether any of the elements in bullet_list
             for (var j = 0; j < bullet_list.length; j++){
+                // appear in our cells
                 if (cellContent.includes(bullet_list[j])){
+                    // and if yes, add that cell to matchingCells
                     matchingCells.push(cell)
                 }
             }
         }
     }
-// Create the notebook structure
+
+    // create pdf content from our selected cells
+    var matching_markdown = [];
+    for (var i = 0; i < matchingCells.length; i++){
+        cell = matchingCells[i];
+        cell = cell.get_text();
+        matching_markdown.push(cell)
+    }
+    console.log(matching_markdown);
+
+// Create the notebook structure from our selected cells
 const notebookStructure = {
     cells: matchingCells,
     metadata: {
@@ -279,11 +290,16 @@ const notebookStructure = {
     nbformat_minor: 5,
   };
     
-    // Convert the notebook structure to JSON string
-    const notebookJSON = JSON.stringify(notebookStructure);
-    
 
-        console.log(notebookJSON)
+    const notebookJSON = JSON.stringify(notebookStructure);
+
+
+    var a = document.createElement("a");
+    a.href = window.URL.createObjectURL(new Blob([notebookJSON], {type: "application/json"}));
+    a.download = "documentation.ipynb";
+    a.click();
+
+    
 
       };
 
