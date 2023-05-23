@@ -268,9 +268,12 @@ define([
     for (var i = 0; i < matchingCells.length; i++){
         cell = matchingCells[i];
         cell = cell.get_text();
-        matching_markdown.push(cell)
+        matching_markdown.push(cell);
     }
-    console.log(matching_markdown);
+    var collapsedMarkdown = matching_markdown.join("\n\n");
+    var markdownDate = new Date(); 
+    var markdownHeader = "# Data Documentation Sheet \n #### Date: " + markdownDate + "\n \n";
+    var collapsedMarkdown = markdownHeader  + "\n\n" + collapsedMarkdown;
 
 // Create the notebook structure from our selected cells
 const notebookStructure = {
@@ -292,14 +295,20 @@ const notebookStructure = {
     
 
     const notebookJSON = JSON.stringify(notebookStructure);
+    var blob = new Blob([collapsedMarkdown], {type: 'text/markdown'});
 
+    var fileName = window.prompt("Please enter the filename, s'il te plaît.", "widd");
 
-    var a = document.createElement("a");
-    a.href = window.URL.createObjectURL(new Blob([notebookJSON], {type: "application/json"}));
-    a.download = "documentation.ipynb";
-    a.click();
-
-    
+    if (fileName) {
+      var a = document.createElement('a');
+      a.href = window.URL.createObjectURL(blob);
+      a.download = fileName + '.md';
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(a.href);
+    }
 
       };
 
@@ -308,7 +317,7 @@ const notebookStructure = {
         Jupyter.toolbar.add_buttons_group([
             {
                 'label' : 'Create WIDD',
-                'icon' : 'fa-wand-magic-sparkles',
+                'icon' : 'fa fa-magic',
                 'callback' : createDataDoc,
                 'id' : 'widd-button'
             }
