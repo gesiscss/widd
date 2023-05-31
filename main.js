@@ -48,7 +48,7 @@ define([
     }
 
 
-    console.log(Jupyter.notebook.config.data)
+    console.log(Jupyter.notebook.config.data.snippets)
 
     function config_loaded_callback (){
         if (options['pre_config_hook'] !== undefined){
