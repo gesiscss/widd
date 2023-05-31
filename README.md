@@ -4,15 +4,15 @@
 
 You are a diligent social scientist, keen to execute a rigorous quantitative analysis and always on the go to enhance the quality of your data and the validity of your results.
 
-Sadly, in your priority data documentation usually comes last in the form of a careless appendix, the creation-process of which is driven by haste and a lot of backwards-researching on the decisions you and your team made five months ago. No wonder, even though you are pro-data quality, documentation of your research decision is a thing that you secretly and openly disgusts you.
+Sadly, in your priority data documentation usually comes last in the form of a careless appendix, the creation-process of which is driven by haste and a lot of backwards-researching on the decisions you and your team made five months ago. No wonder, even though you are very pro-data quality, documentation of your research decision is a thing that secretly and openly disgusts you.
 
-Luckily, there is WIDD, your **workflow-integrated data documentation**.
+Luckily, there is WIDD, or **workflow-integrated data documentation** by [GESIS CSS](https://github.com/gesiscss/).
 
-WIDD enables you to 
+WIDD enables you to integrate the tedious data documentation into your research process and makes data documentation a handy by-product of your research project.
 
 ## Installation
 
-- Before you start: make sure you have jupyter extensions installed for you jupyter notebook:
+- Before you start: make sure you have jupyter notebook extensions installed on your machine:
   + `pip install jupyter_contrib_nbextensions`
   + `jupyter contrib nbextension install --user`
 
