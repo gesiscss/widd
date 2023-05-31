@@ -69,7 +69,7 @@ define([
                 {
                     'name' : 'WIDD',    
                     'sub-menu-direction' : cfg.top_level_submenu_goes_left ? 'left' : 'right',
-                    'sub-menu' : [],
+                    'sub-menu' : menu_bullets,
                 },
             ];
 
