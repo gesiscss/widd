@@ -47,7 +47,7 @@ define([
         cfg.include_submenu[includable_submenu_keys[[ii]]] == true;
     }
 
-
+    console.log(Jupyter.notebook.config.data)
     console.log(Jupyter.notebook.config.data.snippets)
 
     function config_loaded_callback (){
@@ -69,18 +69,14 @@ define([
                 {
                     'name' : 'WIDD',    
                     'sub-menu-direction' : cfg.top_level_submenu_goes_left ? 'left' : 'right',
-                    'sub-menu' : menu_bullets,
+                    'sub-menu' : [],
                 },
             ];
 
-            for(var ii=0; ii < includable_submenu_keys.length; ii++){
-                var key = includable_submenu_keys[ii];
-                if (cfg.include_submenu[key]){
                     console.log(mod_log_prefix,
                         'inserting default', key, 'sub-menu');
+                        var key = 'menu_bullets';
                         options.menus[0]['sub-menu'].push(menu_bullets);
-                }
-            }
         }
 
 
