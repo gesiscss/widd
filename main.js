@@ -6,7 +6,7 @@ define([
 ], function(requirejs, $, Jupyter, menu_bullets) {
     "use strict";
 
-    var mod_name = 'widd';
+    var mod_name = 'widd';  
     var mod_log_prefix = mod_name + '[' + mod_name + ']';
 
     var menus = [
@@ -46,6 +46,9 @@ define([
     for (var ii=0; ii < includable_submenu_keys.length; ii++){
         cfg.include_submenu[includable_submenu_keys[[ii]]] == true;
     }
+
+
+    console.log(Jupyter.notebook.config.data)
 
     function config_loaded_callback (){
         if (options['pre_config_hook'] !== undefined){
